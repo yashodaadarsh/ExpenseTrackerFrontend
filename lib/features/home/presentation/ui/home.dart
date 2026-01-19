@@ -246,6 +246,8 @@ class _HomePageState extends State<HomePage> {
     int monthlyLimit = state.userDto.limit;
     double percentage = monthlyLimit == 0 ? 0.0 : ( ( state.totalExpense / monthlyLimit ) * 100 );
 
+    print("Percentage :- $monthlyLimit");
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       padding: const EdgeInsets.all(20),

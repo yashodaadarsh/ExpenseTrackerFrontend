@@ -93,7 +93,7 @@ class MessageHandlingApiServiceImpl extends MessageHandlingApiService{
       }
 
       return response.map<Map<String, dynamic>>((expense) {
-        final amount = int.tryParse(expense['amount'].toString()) ?? 0;
+        final amount = double.tryParse(expense['amount'].toString()) ?? 0;
 
 
         return {

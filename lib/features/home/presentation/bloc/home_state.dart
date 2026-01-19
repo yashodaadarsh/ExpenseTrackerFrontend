@@ -8,7 +8,7 @@ class HomePageLoadingState extends HomePageState {}
 
 class HomePageLoadedState extends HomePageState {
   final List<Map<String, dynamic>> transactions;
-  final int totalExpense;
+  final double totalExpense;
   final UserDto userDto;
 
   HomePageLoadedState({

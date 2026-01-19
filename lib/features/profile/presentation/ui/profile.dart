@@ -1,6 +1,7 @@
 
 import 'package:expense_tracker/features/home/presentation/bloc/home_bloc.dart';
 import 'package:expense_tracker/features/home/presentation/bloc/home_event.dart';
+import 'package:expense_tracker/features/home/presentation/ui/home.dart';
 import 'package:flutter/material.dart';
 
 
@@ -295,7 +296,7 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() => _isLoading = false);
 
     if (success) {
-      homeBloc.add(LoadTransactionsEvent());
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Profile updated successfully!"), backgroundColor: Colors.green),

@@ -25,6 +25,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       final transactions = await service.loadTransactions();
       final userResult = await service.getUserDetails(); // Returns Either<String, Map>
 
+
       userResult.fold(
             (error) {
           emit(HomePageErrorState(error));
@@ -32,11 +33,11 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
             (userJson) {
           final userDto = UserDto.fromJson(userJson);
 
-          final totalExpense = transactions.fold<int>(
-            0,
+          final totalExpense = transactions.fold<double>(
+            0.0,
                 (sum, item) {
-              final amount = int.tryParse(item['amount'].toString()) ?? 0;
-              return sum + amount;
+              final amount = (item['amount'] as num?) ?? 0;
+              return sum + amount.toDouble();
             },
           );
 
