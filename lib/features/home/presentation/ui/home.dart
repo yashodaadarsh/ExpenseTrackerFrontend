@@ -179,10 +179,10 @@ class _HomePageState extends State<HomePage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    IconButton(icon: const Icon(Icons.home, color: Colors.deepPurple), onPressed: () {}),
-                    IconButton(icon: const Icon(Icons.bar_chart, color: Colors.grey), onPressed: () {}),
+                    IconButton(icon: const Icon(Icons.home, color: Colors.deepPurple), onPressed: () {
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+                    }),
                     const SizedBox(width: 40),
-                    IconButton(icon: const Icon(Icons.wallet, color: Colors.grey), onPressed: () {}),
                     IconButton(icon: const Icon(Icons.person, color: Colors.grey), onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(currentUser: state.userDto)));
                     }),
@@ -236,14 +236,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             ],
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: const Icon(Icons.notifications, color: Colors.white),
           ),
         ],
       ),

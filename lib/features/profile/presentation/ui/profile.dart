@@ -158,7 +158,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     const SizedBox(height: 16),
                     _buildTextField("Email", _emailController, Icons.email_outlined,
-                        inputType: TextInputType.emailAddress),
+                        inputType: TextInputType.emailAddress,
+                        editable: false,
+                    ),
                     const SizedBox(height: 16),
                     _buildTextField("Phone Number", _phoneController, Icons.phone_outlined,
                         inputType: TextInputType.number),
@@ -207,26 +209,42 @@ class _ProfilePageState extends State<ProfilePage> {
 
   // --- Helper Widgets ---
 
-  Widget _buildTextField(String label, TextEditingController controller, IconData icon, {TextInputType inputType = TextInputType.text}) {
+  Widget _buildTextField(
+      String label,
+      TextEditingController controller,
+      IconData icon, {
+        TextInputType inputType = TextInputType.text,
+        bool editable = true, // 👈 new flag
+      }) {
+    final bool isEnabled = _isEditing && editable;
+
     return TextFormField(
       controller: controller,
-      enabled: _isEditing, // Key Logic: Disable when not editing
+      enabled: isEnabled,
       keyboardType: inputType,
-      validator: (value) => value!.isEmpty ? "Required" : null,
+      validator: editable
+          ? (value) => value!.isEmpty ? "Required" : null
+          : null, // no validation for read-only field
       style: TextStyle(
-        color: _isEditing ? Colors.black : Colors.grey[800],
-        fontWeight: _isEditing ? FontWeight.normal : FontWeight.w500,
+        color: isEnabled ? Colors.black : Colors.grey[700],
+        fontWeight: isEnabled ? FontWeight.normal : FontWeight.w500,
       ),
       decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(icon, color: Colors.deepPurple),
         filled: true,
-        fillColor: _isEditing ? Colors.purple.withOpacity(0.05) : Colors.transparent,
-        border: _isEditing
-            ? OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none)
-            : InputBorder.none, // Removes border when viewing
-        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+        fillColor: isEnabled
+            ? Colors.purple.withOpacity(0.05)
+            : Colors.transparent,
+        border: isEnabled
+            ? OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        )
+            : InputBorder.none,
         disabledBorder: InputBorder.none,
+        contentPadding:
+        const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
       ),
     );
   }

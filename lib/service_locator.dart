@@ -61,8 +61,8 @@ void setUpServiceLocator(){
   s1.registerSingleton<LoginBloc>(
       LoginBloc()
   );
-  s1.registerSingleton<HomePageBloc>(
-      HomePageBloc()
+  s1.registerFactory<HomePageBloc>(
+        () => HomePageBloc(),
   );
 
 }
