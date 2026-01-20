@@ -7,15 +7,12 @@ class DioHelper {
   // =====================
   // COMMON OPTIONS BUILDER
   // =====================
-  Options _buildOptions({String? token, String? user_id}) {
+  Options _buildOptions({String? token , String? refreshToken }) {
     final headers = <String, dynamic>{};
 
     if (token != null) {
       headers['Authorization'] = 'Bearer $token';
-    }
-
-    if (user_id != null) {
-      headers['x-user-id'] = user_id;
+      headers['X-Refresh-Token'] = refreshToken;
     }
 
     return Options(
@@ -35,6 +32,7 @@ class DioHelper {
     required String url,
     Object? requestBody,
     String? token,
+    String? refreshToken,
     Map<String, dynamic>? queryParameters
   }) async {
     try {
@@ -42,7 +40,7 @@ class DioHelper {
         url,
         data: requestBody,
         queryParameters: queryParameters,
-        options: _buildOptions(token: token),
+        options: _buildOptions(token: token , refreshToken: refreshToken),
       );
       return response.data;
     } catch (e) {
@@ -57,13 +55,13 @@ class DioHelper {
     required String url,
     Object? requestBody,
     String? token,
-    String? user_id,
+    String? refreshToken
   }) async {
     try {
       final response = await dio.post(
         url,
         data: requestBody,
-        options: _buildOptions(token: token,user_id: user_id),
+        options: _buildOptions(token: token, refreshToken: refreshToken),
       );
       return response.data;
     } catch (e) {
@@ -78,12 +76,13 @@ class DioHelper {
     required String url,
     Object? requestBody,
     String? token,
+    String? refreshToken
   }) async {
     try {
       final response = await dio.put(
         url,
         data: requestBody,
-        options: _buildOptions(token: token),
+        options: _buildOptions(token: token,refreshToken: refreshToken),
       );
       return response.data;
     } catch (e) {
@@ -98,12 +97,13 @@ class DioHelper {
     required String url,
     Object? requestBody,
     String? token,
+    String? refreshToken
   }) async {
     try {
       final response = await dio.patch(
         url,
         data: requestBody,
-        options: _buildOptions(token: token),
+        options: _buildOptions(token: token,refreshToken: refreshToken),
       );
       return response.data;
     } catch (e) {
@@ -118,12 +118,13 @@ class DioHelper {
     required String url,
     Object? requestBody,
     String? token,
+    String? refreshToken
   }) async {
     try {
       final response = await dio.delete(
         url,
         data: requestBody,
-        options: _buildOptions(token: token),
+        options: _buildOptions(token: token,refreshToken: refreshToken),
       );
       return response.data;
     } catch (e) {

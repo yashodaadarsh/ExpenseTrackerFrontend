@@ -1,16 +1,16 @@
 
 import 'package:expense_tracker/features/home/presentation/bloc/home_bloc.dart';
-import 'package:expense_tracker/features/home/presentation/bloc/home_event.dart';
 import 'package:expense_tracker/features/home/presentation/ui/home.dart';
 import 'package:flutter/material.dart';
 
 
 import '../../../../core/models/user_dto.dart';
 import '../../../../service_locator.dart';
+import '../../../login/presentation/ui/LoginPage.dart';
 import '../../data/source/user_service.dart';
 
 class ProfilePage extends StatefulWidget {
-  // You might pass the initial user data here or fetch it in initState
+
   final UserDto currentUser;
 
   const ProfilePage({super.key, required this.currentUser});
@@ -303,14 +303,17 @@ class _ProfilePageState extends State<ProfilePage> {
         );
         setState(() {
           _isEditing = false;
-          // Ideally, update the widget.currentUser here or use State Management (Bloc/Provider)
-          // to refresh the global state. For now, we assume the UI reflects the controller values.
         });
       }
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Failed to update profile"), backgroundColor: Colors.red),
+          const SnackBar(content: Text("Session Expired Please Login Again"), backgroundColor: Colors.red),
+        );
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+              (route) => false, // removes ALL routes
         );
       }
     }

@@ -213,16 +213,16 @@ class _LoginPageState extends State<LoginPage> {
 
     result.fold(
           (failure) {
-        // Tokens invalid → stay on login or show login screen
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("Session expired. Log in again to continue using the app.")),
+            );
       },
           (success) {
         // Tokens valid → navigate to home
-        WidgetsBinding.instance.addPostFrameCallback((_) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (_) => const HomePage()),
           );
-        });
       },
     );
   }

@@ -1,23 +1,24 @@
-import 'dart:convert';
 
 import 'package:expense_tracker/core/constants/api_urls.dart';
 import 'package:expense_tracker/core/network/dio_helper.dart';
-import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../service_locator.dart';
 import '../models/expenseDto.dart';
 
 class ExpenseService {
-  // Replace with your actual machine IP/URL
-  static const String _baseUrl = "http://10.118.102.247:9820";
 
-  Future<bool> addExpense(ExpenseDto expense, String userId) async {
+  Future<bool> addExpense(ExpenseDto expense) async {
+
+    final tokens = await getSavedTokens();
+    final String? accessToken = tokens['accessToken'];
+
 
     try {
       final response = await s1<DioHelper>().post(
         url: ApiUrls.addExpenseUrl,
+        token: accessToken,
         requestBody: expense.toJson(),
-        user_id: userId
       );
 
       print("Add Expense Response :- $response");
@@ -30,7 +31,20 @@ class ExpenseService {
       }
     } catch (e) {
       print("Error calling API: $e");
-      return false; // Or throw exception depending on how you handle errors
+      return false;
     }
   }
+
+  Future<Map<String, String?>> getSavedTokens() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.reload();
+
+    return {
+      'accessToken': prefs.getString('accessToken'),
+      'refreshToken': prefs.getString('refreshToken'),
+      'userId': prefs.getString('userId')
+    };
+  }
+
+
 }

@@ -4,7 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../service_locator.dart';
-import '../../../transactions/data/models/expenseDto.dart'; // Add intl: ^0.18.0 to pubspec.yaml
+import '../../../login/presentation/ui/LoginPage.dart';
+import '../../../transactions/data/models/expenseDto.dart';
 
 class AddExpensePage extends StatefulWidget {
   const AddExpensePage({super.key});
@@ -327,16 +328,13 @@ class _AddExpensePageState extends State<AddExpensePage> {
       merchant: _merchantController.text,
       currency: "INR",
       createdAt: _selectedDate,
-      // externalId: const Uuid().v4(), // Optional: If you want to generate ID on frontend
     );
 
     // 2. Retrieve the UserID
-    // (You likely stored this in SharedPreferences or a Singleton after Login)
     final tokens = await getSavedTokens();
-    final String? userId = tokens['userId'];// REPLACE with actual logic
 
     // 3. Call the Service
-    final bool success = await _expenseService.addExpense(newExpense, userId!);
+    final bool success = await _expenseService.addExpense(newExpense);
 
     setState(() => _isLoading = false);
 
@@ -352,9 +350,14 @@ class _AddExpensePageState extends State<AddExpensePage> {
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text("Failed to add expense. Please try again."),
+            content: Text("Session Expired Please Login Again"),
             backgroundColor: Colors.red,
           ),
+        );
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+              (route) => false, // removes ALL routes
         );
       }
     }

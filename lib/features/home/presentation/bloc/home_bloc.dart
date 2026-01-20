@@ -51,7 +51,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
         },
       );
     } catch (e) {
-      emit(HomePageErrorState("Failed to load data: $e"));
+      emit(HomePageErrorState("Something went wrong. Please log in again and try."));
     }
   }
 

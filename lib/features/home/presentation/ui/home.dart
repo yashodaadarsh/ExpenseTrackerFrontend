@@ -10,6 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 
 import '../../../../service_locator.dart';
+import '../../../login/presentation/ui/LoginPage.dart';
 import '../../background/background_service_locator.dart';
 import '../../data/source/message_handling_api_service.dart';
 import '../bloc/home_bloc.dart';
@@ -78,7 +79,7 @@ class _HomePageState extends State<HomePage> {
         telephony.listenIncomingSms(
           // FOREGROUND Handler (App is Open)
           onNewMessage: (SmsMessage message) async {
-            debugPrint("☀️ FOREGROUND MESSAGE: ${message.body}");
+            debugPrint(" FOREGROUND MESSAGE: ${message.body}");
             homeBloc.add(IncomingSmsEvent(message));
           },
 
@@ -100,6 +101,11 @@ class _HomePageState extends State<HomePage> {
         if (state is HomePageErrorState) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text(state.message)),
+          );
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => LoginPage()),
+                (route) => false, // removes ALL routes
           );
         }
       },

@@ -28,8 +28,6 @@ class LoginApiServiceImpl extends LoginApiService{
 
       // 1. Check for NULL before casting
       if (response == null) {
-        // If response is null, it usually means the API call failed (401/403)
-        // and DioHelper returned null.
         return const Left("Invalid Credentials");
       }
 
@@ -106,6 +104,7 @@ class LoginApiServiceImpl extends LoginApiService{
       'accessToken': prefs.getString('accessToken'),
       'refreshToken': prefs.getString('refreshToken'),
     };
+
   }
 
 

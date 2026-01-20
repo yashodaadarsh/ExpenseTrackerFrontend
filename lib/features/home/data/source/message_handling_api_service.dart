@@ -33,7 +33,9 @@ class MessageHandlingApiServiceImpl extends MessageHandlingApiService{
         requestBody: {
           'message': '${message.body}',
         },
-        user_id: tokens['userId']
+        token: tokens['accessToken'],
+        refreshToken: tokens['refreshToken']
+
       );
 
       final int timestamp = message.date ?? 0;
@@ -75,10 +77,7 @@ class MessageHandlingApiServiceImpl extends MessageHandlingApiService{
       }
 
       final response = await s1<DioHelper>().get(
-        url: ApiUrls.getExpenseUrl, // "/getExpense"
-        queryParameters: {
-          'user_id': userId,
-        },
+        url: ApiUrls.getExpenseUrl,
         token: accessToken
       );
 
@@ -100,7 +99,7 @@ class MessageHandlingApiServiceImpl extends MessageHandlingApiService{
           'title': expense['merchant'] ?? 'Unknown',
           'amount': amount,
           'date': formatDateTime( expense['created_at'].toString() ),
-          'icon': Icons.shopping_cart, // you can map this later
+          'icon': Icons.currency_rupee_sharp,
           'color': Colors.orange,
           'isExpense': amount > 0,
         };
@@ -153,6 +152,7 @@ class MessageHandlingApiServiceImpl extends MessageHandlingApiService{
         requestBody: {
           'user_id': tokens['userId'],
         },
+        token: tokens['accessToken']
       );
 
       if (response == null) {
