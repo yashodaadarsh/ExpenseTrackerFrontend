@@ -17,12 +17,18 @@ Beyond standard CRUD operations, this application solves a major user pain point
 
 ### **How It Works (Telephony Integration)**
 1.  **Background Listening:** The app utilizes a custom Telephony implementation (`packages/telephony`) to listen for incoming SMS messages safely in the background.
-2.  **Regex Parsing:** When a message arrives from a known bank (e.g., "HDFC", "SBI"), the app applies regex patterns to extract:
-    * **Amount:** (e.g., "Rs. 500.00")
-    * **Merchant/Source:** (e.g., "Starbucks", "Uber")
-    * **Date/Time**
-3.  **Auto-Logging:** The parsed data is immediately sent to the API Gateway, creating a seamless "Swipe & Forget" experience for the user.
 
+2.  **Edge Capture (Mobile):** 
+* The app uses a background service (`packages/telephony`) to securely intercept transaction SMS messages in real-time.
+    * Instead of processing locally, it acts as a secure conduit, forwarding the **raw message payload** to the backend via the Kong API Gateway.
+
+3.  **Cloud Processing (LLM Engine):**
+    * The backend **Data Science Service** receives the raw text.
+    * An **LLM (Large Language Model)** analyzes the natural language of the SMS. It intelligently distinguishes between a "spent" transaction, a "received" refund, or a spam message, extracting:
+        * **Amount** (normalized currency)
+        * **Merchant** (context-aware extraction)
+        * **Category** (AI-predicted tagging)
+3.  **Result:** * The user swipes their card, receives an SMS, and the expense appears in the app automatically—tagged, categorized, and cleaned by AI without a single manual tap.
 ---
 
 ##  Tech Stack & Modules
